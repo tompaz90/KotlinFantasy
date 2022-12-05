@@ -7,4 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="loginbackground">#0C97E6</color>
+    <color name="loginbutton">#1C13A4</color>
 </resources>
