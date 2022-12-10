@@ -2,14 +2,16 @@ package com.liceolapaz.des.tpp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 
 class AnadirJugador : AppCompatActivity() {
 
-    var codigo = 0
     private lateinit var nombre : EditText
     private lateinit var precio : EditText
     private lateinit var posiciones : Spinner
@@ -31,28 +33,47 @@ class AnadirJugador : AppCompatActivity() {
         cancelarBtn = findViewById(R.id.cancelarBtn)
         jugadoresDB = SQLiteHelper(this)
 
+        aceptarBtn.setOnClickListener(){
+            crearDialogo()
+        }
+
+
         val adaptador =
-            ArrayAdapter.createFromResource(this, R.array.posiciones,
-                android.R.layout.simple_spinner_item)
+            ArrayAdapter.createFromResource(
+                this, R.array.posiciones,
+                android.R.layout.simple_spinner_item
+            )
         adaptador.setDropDownViewResource(
-            android.R.layout.simple_spinner_dropdown_item)
+            android.R.layout.simple_spinner_dropdown_item
+        )
         posiciones.adapter = adaptador
 
         cancelarBtn.setOnClickListener() {
             val intent = Intent(this@AnadirJugador, menuBD::class.java)
             startActivity(intent)
         }
-        aceptarBtn.setOnClickListener(){
+    }
+    fun crearDialogo()  {
             if (nombre.text.isNotBlank() && precio.text.isNotBlank() && puntos.text.isNotBlank()) {
-                codigo++
-                       jugadoresDB.insertarRegistro(codigo, nombre.text.toString(), precio.text.toString().toInt(), posiciones.toString(), puntos.toString().toInt())
-                        Toast.makeText(this, "El registro se ha insertado correctamente", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this, "Es necesario rellenar todos los campos", Toast.LENGTH_LONG).show()
-                    }
+                //HAY QUE PASARLE LOS ARGUMENTS AL DIALOGO
+                //https://www.folkstalk.com/tech/how-to-pass-data-from-activity-to-dialogfragment-solutions/
+                //setArguments
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Confirmar")
+                builder.setMessage("Desea actualizar la base de datos?")
+                builder.setPositiveButton("Aceptar") {
+                        dialog, which ->
+                    val intent = Intent(this@AnadirJugador, menuBD::class.java)
+                    startActivity(intent)
+                }
+                builder.setNegativeButton("Cancelar") {
+                    dialog, which ->
+                    val intent = Intent(this@AnadirJugador, menuBD::class.java)
+                    startActivity(intent)
+                }
+                builder.show()
+            }
         }
-
-        }
-
 
     }
+

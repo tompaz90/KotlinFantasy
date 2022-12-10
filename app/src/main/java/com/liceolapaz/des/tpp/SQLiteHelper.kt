@@ -15,15 +15,8 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper (context, "jugadores.db"
         onCreate(db)
     }
 
-    fun insertarRegistro(codigo: Int, nombre: String, precio: Int, posiciones: String, puntos: Int) {
-        val datos = ContentValues()
-        datos.put("codigo", codigo)
-        datos.put("nombre", nombre)
-        datos.put("precio", precio)
-        datos.put("posiciones", posiciones)
-        datos.put("puntos", puntos)
+    fun insertarRegistro(nombres: String, precios: Int, posicion: String, puntuacion: Int) {
         val db = this.writableDatabase
-        db.insert("jugadores", null, datos)
-        db.close()
+        db!!.execSQL("INSERT INTO jugadores (nombre, precio, posicion, puntos) VALUES ($nombres, $precios, $posicion, $puntuacion")
     }
 }

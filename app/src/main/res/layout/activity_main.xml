@@ -8,43 +8,53 @@
 
     <GridLayout
         android:id="@+id/login"
-        android:layout_width="360dp"
-        android:layout_height="210dp"
+        android:layout_width="362dp"
+        android:layout_height="247dp"
+        android:background="@color/loginbackground"
         android:columnCount="1"
         android:orientation="horizontal"
         android:rowCount="2"
-        android:background="@color/loginbackground"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_columnWeight="1"
             android:layout_width="120dp"
+            android:layout_columnWeight="1"
             android:padding="8dp"
             android:text="Usuario:" />
 
         <EditText
             android:id="@+id/user"
-            android:layout_columnWeight="1"
             android:layout_width="120dp"
+            android:layout_columnWeight="1"
             android:padding="7dp" />
 
         <TextView
-            android:layout_columnWeight="1"
             android:layout_width="120dp"
+            android:layout_columnWeight="1"
             android:padding="8dp"
             android:text="Contraseña:" />
 
         <EditText
             android:id="@+id/password"
-            android:inputType="textPassword"
-            android:layout_columnWeight="1"
             android:layout_width="120dp"
+            android:layout_columnWeight="1"
+            android:inputType="textPassword"
             android:padding="7dp" />
+
+        <TextView
+            android:id="@+id/incorrecto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="7dp"
+            android:text="El usuario o contraseña son incorrectos"
+            android:visibility="invisible"
+
+            />
 
         <Button
             android:id="@+id/loginButton"
@@ -52,8 +62,8 @@
             android:layout_width="321dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:background="@color/loginbutton"
             android:layout_margin="7dp"
+            android:background="@color/loginbutton"
             android:text="login" />
 
 
