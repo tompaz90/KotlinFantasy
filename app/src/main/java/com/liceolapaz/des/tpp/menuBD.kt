@@ -3,10 +3,8 @@ package com.liceolapaz.des.tpp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
 import android.view.Menu
 import android.view.MenuItem
-import android.view.inputmethod.InputBinding
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +17,7 @@ class menuBD : AppCompatActivity() {
         setContentView(R.layout.activity_menu_bd)
         initRecyclerView()
 
-        val textView: TextView = findViewById(R.id.contadorJugadores) as TextView
+        val textView: TextView = findViewById(R.id.contador)
         textView.setOnClickListener {
             textView.text = "El numero de jugadores totales es de "+ jugadorList.size}
     }
@@ -41,10 +39,12 @@ class menuBD : AppCompatActivity() {
     }
 
     fun initRecyclerView(){
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerJugadores)
-        recyclerView.layoutManager=LinearLayoutManager(this)
-        recyclerView.adapter = JugadorAdapter(jugadorList)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerJugador)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = JugadorAdapter(JugadorProvider.jugadorList)
     }
+
+
 
 
 }
