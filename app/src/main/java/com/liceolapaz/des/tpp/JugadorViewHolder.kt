@@ -11,10 +11,11 @@ class JugadorViewHolder(view: View) : RecyclerView.ViewHolder(view){
     val precio = view.findViewById<TextView>(R.id.tvPrecio)
     val puntos = view.findViewById<TextView>(R.id.tvPuntos)
 
-    fun render(jugador:Jugador){
+    fun render(jugador:Jugador, onClickListener: (Jugador) -> Unit){
        nombre.text = jugador.nombre
         posicion.text = jugador.posicion
         precio.text = jugador.precio.toString()
         puntos.text = jugador.puntos.toString()
+        itemView.setOnClickListener {onClickListener(jugador)}
     }
 }

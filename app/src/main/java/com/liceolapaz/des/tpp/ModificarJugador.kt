@@ -32,7 +32,7 @@ class ModificarJugador : AppCompatActivity() {
         codigo = findViewById(R.id.editTextCodigo)
         nombre = findViewById(R.id.editTextNombre)
         precio = findViewById(R.id.editTextPrecio)
-        posiciones = findViewById(R.id.editTextPosiciones)
+        posiciones = findViewById(R.id.SpinnerPosiciones)
         puntos = findViewById(R.id.editTextPuntos)
         eliminarBtn = findViewById(R.id.BtnEliminar)
         cancelarBtn = findViewById(R.id.BtnCancelar)
@@ -40,15 +40,40 @@ class ModificarJugador : AppCompatActivity() {
         val database = SQLiteHelper(this, "jugadores.db", null, 1)
         jugadoresDB = database.writableDatabase
 
+        codigo.setText(intent.getStringExtra("Codigo"))
+        nombre.setText(intent.getStringExtra("nombre"))
+        precio.setText(intent.getStringExtra("precio"))
         val adaptador =
-        ArrayAdapter.createFromResource(
-            this, R.array.posiciones,
-            android.R.layout.simple_spinner_item
-        )
+            ArrayAdapter.createFromResource(
+                this, R.array.posiciones,
+                android.R.layout.simple_spinner_item
+            )
         adaptador.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
         )
         posiciones.adapter = adaptador
+
+        if (intent.getStringExtra("posicion").contentEquals("Portero (PT)")) {
+            posiciones.setSelection(0)
+        }
+
+        if (intent.getStringExtra("posicion").contentEquals("Defensa (DF)")) {
+            posiciones.setSelection(1)
+        }
+
+        if (intent.getStringExtra("posicion").contentEquals("Mediocampista (MC)")) {
+            posiciones.setSelection(2)
+        }
+
+        if (intent.getStringExtra("posicion").contentEquals("Delantero (DL)")) {
+            posiciones.setSelection(3)
+        }
+
+        puntos.setText(intent.getStringExtra("puntos"))
+
+
+
+
 
 
 
@@ -91,11 +116,12 @@ class ModificarJugador : AppCompatActivity() {
                     val precio2 = precio.text.toString().toDouble()
                     val posicion2 = posiciones.selectedItem.toString()
                     val puntos2 = puntos.text.toString().toInt()
+                    val codigo2 = codigo.text.toString()
 
-                    jugadoresDB.execSQL("UPDATE FROM jugadores SET nombre = '$nombre2' WHERE codigo = '$codigo' ")
-                    jugadoresDB.execSQL("UPDATE FROM jugadores SET precio = '$precio2' WHERE codigo = '$codigo' ")
-                    jugadoresDB.execSQL("UPDATE FROM jugadores SET posicion = '$posicion2' WHERE codigo = '$codigo' ")
-                    jugadoresDB.execSQL("UPDATE FROM jugadores SET puntos = '$puntos2' WHERE codigo = '$codigo' ")
+                    jugadoresDB.execSQL("UPDATE jugadores SET nombre = '$nombre2' WHERE id = '$codigo2' ")
+                    jugadoresDB.execSQL("UPDATE jugadores SET precio = '$precio2' WHERE id = '$codigo2' ")
+                    jugadoresDB.execSQL("UPDATE jugadores SET posicion = '$posicion2' WHERE id = '$codigo2' ")
+                    jugadoresDB.execSQL("UPDATE jugadores SET puntos = '$puntos2' WHERE id = '$codigo2' ")
                     val intent = Intent(this@ModificarJugador, menuBD::class.java)
                     startActivity(intent)
                 }
@@ -119,7 +145,8 @@ class ModificarJugador : AppCompatActivity() {
 
                 override fun onClick(dialogo: DialogInterface?, which: Int) {
                     val intent = Intent(this@ModificarJugador, menuBD::class.java)
-                    jugadoresDB.execSQL("DELETE FROM jugadores WHERE codigo = '$codigo'")
+                    val codigo1 = codigo.text.toString()
+                    jugadoresDB.execSQL("DELETE FROM jugadores WHERE id = '$codigo1'")
                     startActivity(intent)
                 }
             })

@@ -36,15 +36,17 @@ class menuBD : AppCompatActivity() {
             startActivity(intent)
             true
         }
+
         else -> {
             super.onOptionsItemSelected(item)
         }
     }
 
+
     fun initRecyclerView() {
         recuperarRegistros()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerJugador)
-        adapter = JugadorAdapter(JugadorListDB, onClickListener = {jugador -> seleccionarJugador()})
+        adapter = JugadorAdapter(jugadorList = JugadorListDB, onClickListener = {jugador -> seleccionarJugador(jugador)})
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
@@ -72,6 +74,7 @@ class menuBD : AppCompatActivity() {
         }
 
     private fun seleccionarJugador(jugador : Jugador) {
+
         val intent = Intent(this@menuBD, ModificarJugador::class.java)
         intent.putExtra("Codigo", jugador.codigo.toString())
         intent.putExtra("nombre", jugador.nombre)
@@ -79,7 +82,6 @@ class menuBD : AppCompatActivity() {
         intent.putExtra("posicion", jugador.posicion)
         intent.putExtra("puntos", jugador.puntos.toString())
         startActivity(intent)
-
 
     }
 
