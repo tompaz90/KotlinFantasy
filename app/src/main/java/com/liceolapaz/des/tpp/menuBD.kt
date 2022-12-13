@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -45,10 +46,13 @@ class menuBD : AppCompatActivity() {
 
     fun initRecyclerView() {
         recuperarRegistros()
+        val manager = LinearLayoutManager(this)
+        val decoration = DividerItemDecoration(this, manager.orientation)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerJugador)
-        adapter = JugadorAdapter(jugadorList = JugadorListDB, onClickListener = {jugador -> seleccionarJugador(jugador)})
+        adapter = JugadorAdapter(JugadorListDB, onClickListener = {jugador -> seleccionarJugador(jugador)})
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(decoration)
     }
 
 
