@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class JugadorAdapter(private val jugadorList: List<Jugador>) : RecyclerView.Adapter<JugadorViewHolder>() {
+class JugadorAdapter(private val jugadorList: List<Jugador>, private val onClickListener: (Jugador) -> Unit) : RecyclerView.Adapter<JugadorViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JugadorViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
         return JugadorViewHolder(layoutInflater.inflate(R.layout.jugador_rv, parent, false))

@@ -1,14 +1,13 @@
 package com.liceolapaz.des.tpp
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 
 class AnadirJugador : AppCompatActivity() {
 
@@ -18,7 +17,7 @@ class AnadirJugador : AppCompatActivity() {
     private lateinit var puntos : EditText
     private lateinit var aceptarBtn : Button
     private lateinit var cancelarBtn : Button
-    lateinit var jugadoresDB : SQLiteHelper
+    lateinit var jugadoresDB : SQLiteDatabase
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +30,12 @@ class AnadirJugador : AppCompatActivity() {
         puntos = findViewById(R.id.txtPuntos)
         aceptarBtn = findViewById(R.id.aceptarBtn)
         cancelarBtn = findViewById(R.id.cancelarBtn)
-        jugadoresDB = SQLiteHelper(this)
+        val database = SQLiteHelper(this, "jugadores.db", null, 1)
+        jugadoresDB = database.writableDatabase
 
         aceptarBtn.setOnClickListener(){
             crearDialogo()
         }
-
-
         val adaptador =
             ArrayAdapter.createFromResource(
                 this, R.array.posiciones,
@@ -55,25 +53,34 @@ class AnadirJugador : AppCompatActivity() {
     }
     fun crearDialogo()  {
             if (nombre.text.isNotBlank() && precio.text.isNotBlank() && puntos.text.isNotBlank()) {
-                //HAY QUE PASARLE LOS ARGUMENTS AL DIALOGO
-                //https://www.folkstalk.com/tech/how-to-pass-data-from-activity-to-dialogfragment-solutions/
-                //setArguments
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Confirmar")
                 builder.setMessage("Desea actualizar la base de datos?")
-                builder.setPositiveButton("Aceptar") {
+                builder.setPositiveButton("Aceptar", object: DialogInterface.OnClickListener{
+
+                    override fun onClick(dialogo: DialogInterface?, which: Int) {
+                        val nombre2 = nombre.text.toString()
+                        val precio2 = precio.text.toString().toDouble()
+                        val posicion2 = posiciones.selectedItem.toString()
+                        val puntos2 = puntos.text.toString().toInt()
+
+                        jugadoresDB.execSQL("INSERT INTO jugadores (nombre, precio, posicion, puntos) VALUES ('$nombre2', '$precio2', '$posicion2', '$puntos2')")
+                        val intent = Intent(this@AnadirJugador, menuBD::class.java)
+                        startActivity(intent)
+                    }
+
+                })
+                builder.setNegativeButton("Cancelar") {
                         dialog, which ->
                     val intent = Intent(this@AnadirJugador, menuBD::class.java)
                     startActivity(intent)
                 }
-                builder.setNegativeButton("Cancelar") {
-                    dialog, which ->
-                    val intent = Intent(this@AnadirJugador, menuBD::class.java)
-                    startActivity(intent)
-                }
                 builder.show()
+                }
+
+
             }
         }
 
-    }
+
 
